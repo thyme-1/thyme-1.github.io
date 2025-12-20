@@ -7,15 +7,15 @@
   box-sizing: border-box;
 }
 
-:root{
+:root {
   --bg: #f7f6f4;
   --text: #2f2f2f;
-  --muted: rgba(47,47,47,0.75);
+  --muted: rgba(47, 47, 47, 0.75);
 
   --accent: #c9a9d9;       /* lavender */
-  --accent-soft: #efe6f4;  /* soft lavender wash */
+  --accent-soft: #efe6f4;  /* soft wash */
 
-  --shadow: 0 18px 50px rgba(0,0,0,0.12);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
 }
 
 /* =========================
@@ -27,9 +27,10 @@ html, body {
 
 body {
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: radial-gradient(900px 600px at 20% 10%, var(--accent-soft), transparent 60%),
-              radial-gradient(900px 600px at 80% 30%, rgba(201,169,217,0.12), transparent 55%),
-              var(--bg);
+  background:
+    radial-gradient(900px 600px at 20% 10%, var(--accent-soft), transparent 60%),
+    radial-gradient(900px 600px at 80% 30%, rgba(201,169,217,0.12), transparent 55%),
+    var(--bg);
   color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -41,7 +42,7 @@ body {
 ========================= */
 .hero {
   position: relative;
-  overflow: hidden; /* prevents scrollbars from offscreen butterflies */
+  overflow: hidden;
   min-height: 100vh;
 
   display: flex;
@@ -51,7 +52,9 @@ body {
   padding: 56px 20px;
 }
 
-/* subtle “glass” panel */
+/* =========================
+   CONTENT PANEL
+========================= */
 .content {
   position: relative;
   z-index: 1;
@@ -62,11 +65,11 @@ body {
   padding: 38px 28px;
   border-radius: 22px;
 
-  background: rgba(255,255,255,0.55);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
-  border: 1px solid rgba(255,255,255,0.55);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   box-shadow: var(--shadow);
 
   animation: fadeUp 1.1s ease forwards;
@@ -82,13 +85,15 @@ h1 {
 }
 
 .subtitle {
-  font-size: clamp(1.0rem, 2.5vw, 1.15rem);
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
   line-height: 1.6;
   color: var(--muted);
   margin-bottom: 28px;
 }
 
-/* CTA button */
+/* =========================
+   CTA BUTTON
+========================= */
 .cta {
   display: inline-flex;
   align-items: center;
@@ -97,20 +102,22 @@ h1 {
   padding: 14px 26px;
   border-radius: 999px;
 
-  background: linear-gradient(135deg, rgba(201,169,217,1), rgba(201,169,217,0.78));
+  background: linear-gradient(
+    135deg,
+    rgba(201,169,217,1),
+    rgba(201,169,217,0.78)
+  );
   color: white;
   text-decoration: none;
   font-weight: 500;
-  letter-spacing: 0.2px;
 
   box-shadow: 0 16px 36px rgba(201,169,217,0.28);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .cta:hover {
   transform: translateY(-3px);
   box-shadow: 0 22px 52px rgba(201,169,217,0.35);
-  filter: brightness(1.02);
 }
 
 .cta:active {
@@ -118,7 +125,7 @@ h1 {
 }
 
 /* =========================
-   BUTTERFLIES (SVG + CSS motion)
+   BUTTERFLIES (SVG + CSS)
 ========================= */
 .butterflies {
   position: absolute;
@@ -127,59 +134,89 @@ h1 {
   z-index: 0;
 }
 
-/* Each butterfly is an SVG background */
 .butterfly {
   position: absolute;
   width: 44px;
   height: 30px;
-  opacity: 0.22;
 
   background: url("images/butterfly.svg") no-repeat center / contain;
 
-  filter: blur(0.15px);
-  transform: translate3d(0, 0, 0);
+  opacity: 0.45;            /* visible — we can lower later */
+  filter: none;
+
+  transform: translate3d(0,0,0);
   will-change: transform;
 }
 
-/* Drift paths across the screen */
+/* ===== DRIFT PATHS (viewport-based, IMPORTANT) ===== */
 @keyframes drift1 {
-  0%   { transform: translate(-10%, 115%) rotate(10deg); }
-  100% { transform: translate(110%, -20%) rotate(-12deg); }
+  0%   { transform: translate(-25vw, 70vh) rotate(10deg); }
+  100% { transform: translate(125vw, -25vh) rotate(-12deg); }
 }
 @keyframes drift2 {
-  0%   { transform: translate(110%, 120%) rotate(-6deg); }
-  100% { transform: translate(-20%, -10%) rotate(14deg); }
+  0%   { transform: translate(125vw, 80vh) rotate(-6deg); }
+  100% { transform: translate(-30vw, -15vh) rotate(14deg); }
 }
 @keyframes drift3 {
-  0%   { transform: translate(20%, 120%) rotate(8deg); }
-  100% { transform: translate(70%, -15%) rotate(-10deg); }
+  0%   { transform: translate(10vw, 85vh) rotate(8deg); }
+  100% { transform: translate(80vw, -25vh) rotate(-10deg); }
 }
 
-/* Soft bobbing to feel alive (separate from drift) */
+/* Gentle bobbing */
 @keyframes floatBob {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -10px; }
 }
 
-/* Individual butterflies: drift + bob */
-.b1 { left: 10%; top: 70%; animation: drift1 22s linear infinite, floatBob 3.8s ease-in-out infinite; }
-.b2 { left: 70%; top: 85%; width: 34px; opacity: 0.18; animation: drift2 28s linear infinite, floatBob 4.4s ease-in-out infinite; }
-.b3 { left: 40%; top: 90%; width: 50px; opacity: 0.14; animation: drift3 24s linear infinite, floatBob 4.1s ease-in-out infinite; }
-.b4 { left: 85%; top: 60%; width: 28px; opacity: 0.16; animation: drift1 30s linear infinite, floatBob 4.7s ease-in-out infinite; }
-.b5 { left: 25%; top: 75%; width: 40px; opacity: 0.12; animation: drift2 26s linear infinite, floatBob 4.0s ease-in-out infinite; }
+/* Individual butterflies */
+.b1 {
+  animation: drift1 22s linear infinite, floatBob 3.8s ease-in-out infinite;
+}
+.b2 {
+  width: 34px;
+  opacity: 0.38;
+  animation: drift2 28s linear infinite, floatBob 4.4s ease-in-out infinite;
+}
+.b3 {
+  width: 50px;
+  opacity: 0.32;
+  animation: drift3 24s linear infinite, floatBob 4.1s ease-in-out infinite;
+}
+.b4 {
+  width: 28px;
+  opacity: 0.35;
+  animation: drift1 30s linear infinite, floatBob 4.7s ease-in-out infinite;
+}
+.b5 {
+  width: 40px;
+  opacity: 0.30;
+  animation: drift2 26s linear infinite, floatBob 4.0s ease-in-out infinite;
+}
 
-/* Respect reduced motion settings */
+/* =========================
+   ACCESSIBILITY
+========================= */
 @media (prefers-reduced-motion: reduce) {
-  .content { animation: none !important; }
-  .butterfly { animation: none !important; }
+  .butterfly {
+    animation: none !important;
+  }
+  .content {
+    animation: none !important;
+  }
 }
 
 /* =========================
    ANIMATIONS
 ========================= */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(26px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =========================
