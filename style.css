@@ -123,6 +123,48 @@ h1 {
 }
 
 /* =========================
+   FLORAL CORNERS
+========================= */
+.florals {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: rgba(201,169,217,0.55); /* uses currentColor in SVG */
+}
+
+.floral {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  filter: blur(0.2px);
+  opacity: 0.35;
+  transform: translate3d(0,0,0);
+}
+
+.f1 {
+  top: -120px;
+  left: -120px;
+  rotate: -12deg;
+}
+
+.f2 {
+  bottom: -140px;
+  right: -140px;
+  rotate: 18deg;
+}
+
+@media (max-width: 600px) {
+  .floral {
+    width: 220px;
+    height: 220px;
+    opacity: 0.28;
+  }
+  .f1 { top: -100px; left: -110px; }
+  .f2 { bottom: -110px; right: -120px; }
+}
+
+/* =========================
    BUTTERFLIES (SVG + CSS) - fixed (no transform conflicts)
 ========================= */
 .butterflies {
