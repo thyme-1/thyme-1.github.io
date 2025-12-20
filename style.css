@@ -18,6 +18,8 @@
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
 }
 
+body { outline: 10px solid hotpink !important; }
+
 /* =========================
    BASE
 ========================= */
