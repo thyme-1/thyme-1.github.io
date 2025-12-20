@@ -1,0 +1,79 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* COLORS (calm + hopeful) */
+:root {
+  --bg: #f7f6f4;
+  --text: #2f2f2f;
+  --accent: #c9a9d9;
+  --accent-soft: #efe6f4;
+}
+
+/* BASE */
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* HERO SECTION */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* CONTENT */
+.content {
+  text-align: center;
+  max-width: 600px;
+  animation: fadeUp 1.2s ease forwards;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  margin-bottom: 32px;
+}
+
+/* BUTTON */
+.cta {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
