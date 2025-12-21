@@ -125,17 +125,6 @@
     if (themeToggle) themeToggle.checked = enabled;
   }
 
-  // Initialize from localStorage
-  const saved = localStorage.getItem(STORAGE_KEY);
-  const shouldEnable = saved === "christmas";
-  setChristmasMode(shouldEnable);
-
-  if (themeToggle) {
-    themeToggle.addEventListener("change", () => {
-      setChristmasMode(themeToggle.checked);
-    });
-  }
-
   // -----------------------------
   // Snow overlay (lightweight canvas)
   // -----------------------------
@@ -245,5 +234,22 @@
     if (document.hidden) stopSnow();
     else startSnow();
   });
+
+  // -----------------------------
+  // Initialize theme from localStorage + wire the toggle
+  //
+  // IMPORTANT:
+  // Snow functions reference `canvas`/`ctx`, so we only call setChristmasMode()
+  // after the snow canvas variables have been initialized above.
+  // -----------------------------
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const shouldEnable = saved === "christmas";
+  setChristmasMode(shouldEnable);
+
+  if (themeToggle) {
+    themeToggle.addEventListener("change", () => {
+      setChristmasMode(themeToggle.checked);
+    });
+  }
 })();
 
