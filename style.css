@@ -121,48 +121,95 @@ h1 {
 }
 
 /* =========================
-   FLORAL CORNERS (bigger + true corners)
+   FLORALS (clean line art + glow + gentle motion)
 ========================= */
-.florals {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0; /* behind butterflies, behind content */
-
-  color: rgba(201,169,217,0.75);
+.florals{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:1;
 }
 
-.floral {
-  position: absolute;
+/* corner placement */
+.floral{
+  position:absolute;
   width: 520px;
   height: 520px;
-
-  opacity: 0.32;
-  filter: blur(0.4px);
-  transform: translate3d(0,0,0);
+  opacity: 0.55;
+  filter: blur(0.0px);
+  transform-origin: 50% 50%;
+  animation: floralSway 10s ease-in-out infinite;
 }
 
-.f1 {
-  top: -240px;
-  left: -240px;
-  rotate: -12deg;
+.f1{
+  top:-240px;
+  left:-240px;
+  transform: rotate(-8deg);
+  animation-delay: -2.5s;
 }
 
-.f2 {
-  bottom: -260px;
-  right: -260px;
-  rotate: 18deg;
+.f2{
+  bottom:-260px;
+  right:-260px;
+  transform: rotate(10deg);
+  animation-delay: -6s;
 }
 
-@media (max-width: 600px) {
-  .floral {
+/* the actual strokes inside the SVG */
+.floral .vine{
+  stroke: rgba(201,169,217,0.55);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  filter: drop-shadow(0 10px 25px rgba(201,169,217,0.18));
+}
+
+.floral .petal{
+  stroke: rgba(201,169,217,0.65);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: 0.95;
+}
+
+.floral .glow{
+  filter: blur(0.2px);
+  animation: glowPulse 5.5s ease-in-out infinite;
+}
+
+/* gentle motion: slight rotate + float */
+@keyframes floralSway{
+  0%,100% { transform: translateY(0px) rotate(var(--rot, 0deg)); }
+  50%     { transform: translateY(10px) rotate(calc(var(--rot, 0deg) + 2deg)); }
+}
+
+/* glow breathing */
+@keyframes glowPulse{
+  0%,100% { opacity: 0.20; }
+  50%     { opacity: 0.42; }
+}
+
+/* make animation per-corner consistent */
+.f1{ --rot: -8deg; }
+.f2{ --rot: 10deg; }
+
+@media (max-width: 600px){
+  .floral{
     width: 360px;
     height: 360px;
-    opacity: 0.26;
+    opacity: 0.45;
   }
-  .f1 { top: -180px; left: -190px; }
-  .f2 { bottom: -190px; right: -200px; }
+  .f1{ top:-180px; left:-190px; }
+  .f2{ bottom:-190px; right:-200px; }
 }
+
+@media (prefers-reduced-motion: reduce){
+  .floral, .floral .glow{ animation:none !important; }
+}
+
 
 /* =========================
    BUTTERFLIES (SVG + CSS) - fixed (no transform conflicts)
