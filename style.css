@@ -1,0 +1,1010 @@
+/*
+  Butterfly Bloom Life Coaching — premium one-page site
+  ----------------------------------------------------
+  Beginner-friendly notes:
+  - Colors live in :root as CSS variables.
+  - Christmas Mode overrides variables on: html[data-theme="christmas"]
+  - Most components use variables, so theme switching stays simple.
+*/
+
+:root {
+  /* Brand palette derived from your logo */
+  --c-lavender: #d2cce3;
+  --c-periwinkle: #7488ed;
+  --c-indigo: #351a6d;
+  --c-purple: #58489d;
+  --c-mauve: #9f7997;
+  --c-nearblack: #030205;
+
+  /* Light theme (NORMAL MODE) semantic tokens */
+  --bg: #fbfafc;
+  --bg-elev: #ffffff;
+  --bg-tint: rgba(210, 204, 227, 0.32);
+
+  --text: rgba(3, 2, 5, 0.92);
+  --muted: rgba(3, 2, 5, 0.68);
+  --muted-2: rgba(3, 2, 5, 0.56);
+  --border: rgba(53, 26, 109, 0.16);
+  --shadow: 0 18px 60px rgba(3, 2, 5, 0.12);
+
+  --primary: var(--c-indigo);
+  --primary-2: var(--c-purple);
+  --accent: var(--c-periwinkle);
+  --accent-2: var(--c-mauve);
+
+  --focus: rgba(116, 136, 237, 0.55);
+
+  /* Typography */
+  --font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-script: "Great Vibes", "Playfair Display", ui-serif, Georgia, serif;
+
+  /* Layout */
+  --container: 1120px;
+  --radius: 18px;
+  --radius-sm: 14px;
+
+  /* Motion (kept gentle) */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur: 700ms;
+  --dur-fast: 220ms;
+}
+
+/* Christmas Mode (warm cozy dark theme, not pure black) */
+html[data-theme="christmas"] {
+  /* Cozy backgrounds */
+  --bg: #0e0b16; /* deep indigo-black with warmth */
+  --bg-elev: #151024;
+  --bg-tint: rgba(53, 26, 109, 0.24);
+
+  /* Soft off-white text */
+  --text: rgba(244, 240, 234, 0.93);
+  --muted: rgba(244, 240, 234, 0.72);
+  --muted-2: rgba(244, 240, 234, 0.60);
+  --border: rgba(210, 204, 227, 0.15);
+  --shadow: 0 22px 70px rgba(0, 0, 0, 0.46);
+
+  /* Festive accents (subtle) */
+  --accent: #c8a25a; /* muted warm gold */
+  --accent-2: #b35a60; /* soft muted red */
+
+  /* Preserve brand purples/lavenders as secondary accents */
+  --primary: #d2cce3;
+  --primary-2: #9e92d9;
+  --focus: rgba(200, 162, 90, 0.55);
+}
+
+/* Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; /* Smooth scrolling between sections */
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: radial-gradient(1200px 700px at 20% 0%, rgba(210, 204, 227, 0.35), transparent 60%),
+    radial-gradient(1000px 700px at 90% 40%, rgba(116, 136, 237, 0.18), transparent 58%),
+    linear-gradient(180deg, var(--bg), var(--bg));
+  overflow-x: hidden;
+}
+
+html[data-theme="christmas"] body {
+  background: radial-gradient(1100px 700px at 18% 0%, rgba(210, 204, 227, 0.12), transparent 60%),
+    radial-gradient(1200px 700px at 85% 45%, rgba(200, 162, 90, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 40% 80%, rgba(179, 90, 96, 0.08), transparent 62%),
+    linear-gradient(180deg, var(--bg), var(--bg));
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p {
+  line-height: 1.65;
+}
+
+strong {
+  font-weight: 600;
+}
+
+::selection {
+  background: rgba(116, 136, 237, 0.28);
+}
+
+html[data-theme="christmas"] ::selection {
+  background: rgba(200, 162, 90, 0.20);
+}
+
+/* Accessible focus */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.container {
+  width: min(var(--container), calc(100% - 40px));
+  margin-inline: auto;
+}
+
+/* Decorative layer (butterflies + florals) */
+.decor-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.decor {
+  position: absolute;
+  filter: saturate(1.04);
+}
+
+/* Corner clusters */
+.decor--corner {
+  width: clamp(210px, 26vw, 340px);
+  opacity: 0.98;
+  mix-blend-mode: multiply;
+}
+
+html[data-theme="christmas"] .decor--corner {
+  mix-blend-mode: screen;
+  filter: saturate(1.1) drop-shadow(0 10px 24px rgba(200, 162, 90, 0.10));
+}
+
+.decor--tl {
+  top: -30px;
+  left: -24px;
+  animation: floatSlow 12s var(--ease) infinite;
+}
+
+.decor--br {
+  right: -28px;
+  bottom: -34px;
+  transform: rotate(6deg);
+  animation: floatSlow2 14s var(--ease) infinite;
+}
+
+/* Larger faint butterflies drifting behind sections */
+.decor--drift {
+  width: clamp(280px, 42vw, 560px);
+  opacity: 0.45;
+  mix-blend-mode: multiply;
+  filter: blur(0.2px);
+}
+
+html[data-theme="christmas"] .decor--drift {
+  mix-blend-mode: screen;
+  opacity: 0.22;
+  filter: blur(0.6px) drop-shadow(0 12px 36px rgba(210, 204, 227, 0.10));
+}
+
+.decor--d1 {
+  top: 24vh;
+  left: 54%;
+  animation: drift1 18s var(--ease) infinite;
+}
+
+.decor--d2 {
+  top: 70vh;
+  left: 6%;
+  animation: drift2 22s var(--ease) infinite;
+}
+
+@keyframes floatSlow {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(10px, 12px) rotate(-2deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes floatSlow2 {
+  0% {
+    transform: translate(0, 0) rotate(6deg);
+  }
+  50% {
+    transform: translate(-12px, -10px) rotate(4deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(6deg);
+  }
+}
+
+@keyframes drift1 {
+  0% {
+    transform: translate(0, 0) rotate(-6deg);
+  }
+  50% {
+    transform: translate(-26px, 18px) rotate(-3deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-6deg);
+  }
+}
+
+@keyframes drift2 {
+  0% {
+    transform: translate(0, 0) rotate(8deg);
+  }
+  50% {
+    transform: translate(24px, -18px) rotate(11deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(8deg);
+  }
+}
+
+/* Snow canvas (only visible/animated in Christmas mode via JS) */
+.snow {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4; /* overlay above content, below header */
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+
+html[data-theme="christmas"] .snow {
+  opacity: 1;
+}
+
+/* Header / nav */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: rgba(251, 250, 252, 0.62);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(53, 26, 109, 0.10);
+}
+
+html[data-theme="christmas"] .site-header {
+  background: rgba(14, 11, 22, 0.58);
+  border-bottom: 1px solid rgba(210, 204, 227, 0.12);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 18px;
+  width: min(var(--container), calc(100% - 24px));
+  margin-inline: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+}
+
+.brand__logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(3, 2, 5, 0.10));
+}
+
+html[data-theme="christmas"] .brand__logo {
+  filter: drop-shadow(0 14px 28px rgba(200, 162, 90, 0.10));
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.brand__name {
+  font-family: var(--font-serif);
+  letter-spacing: 0.2px;
+  font-weight: 600;
+}
+
+.brand__tag {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.nav__links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.nav__links a {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 10px 10px;
+  border-radius: 12px;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.nav__links a:hover {
+  background: rgba(210, 204, 227, 0.35);
+  color: var(--text);
+}
+
+html[data-theme="christmas"] .nav__links a:hover {
+  background: rgba(200, 162, 90, 0.12);
+}
+
+.nav__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav__toggleLabel {
+  font-size: 12px;
+  color: var(--muted);
+  user-select: none;
+}
+
+/* Toggle switch */
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.switch__track {
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(53, 26, 109, 0.16);
+  border: 1px solid rgba(53, 26, 109, 0.18);
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+html[data-theme="christmas"] .switch__track {
+  background: rgba(210, 204, 227, 0.12);
+  border-color: rgba(210, 204, 227, 0.18);
+}
+
+.switch__thumb {
+  position: absolute;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.86));
+  box-shadow: 0 10px 22px rgba(3, 2, 5, 0.16);
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.switch input:checked ~ .switch__thumb {
+  transform: translateX(20px);
+  box-shadow: 0 12px 28px rgba(200, 162, 90, 0.18);
+}
+
+.switch input:checked ~ .switch__track {
+  background: rgba(116, 136, 237, 0.25);
+  border-color: rgba(116, 136, 237, 0.35);
+}
+
+html[data-theme="christmas"] .switch input:checked ~ .switch__track {
+  background: rgba(200, 162, 90, 0.18);
+  border-color: rgba(200, 162, 90, 0.30);
+}
+
+/* Sections */
+.section {
+  position: relative;
+  z-index: 3; /* above decor + snow */
+  padding: clamp(56px, 6vw, 92px) 0;
+}
+
+.section--tint {
+  background: linear-gradient(180deg, transparent, var(--bg-tint), transparent);
+}
+
+.sectionHead {
+  max-width: 760px;
+  margin-bottom: 26px;
+}
+
+.sectionHead h2 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  margin: 0 0 10px;
+  font-size: clamp(26px, 2.4vw, 34px);
+}
+
+.sectionHead p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Hero */
+.hero {
+  padding-top: clamp(34px, 4.5vw, 60px);
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: clamp(22px, 3vw, 44px);
+  align-items: center;
+}
+
+.hero__logoRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.hero__logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 16px 34px rgba(3, 2, 5, 0.12);
+}
+
+html[data-theme="christmas"] .hero__logo {
+  background: rgba(21, 16, 36, 0.72);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.50);
+}
+
+.hero__script {
+  font-family: var(--font-script);
+  font-size: clamp(32px, 4.2vw, 52px);
+  line-height: 1.0;
+  margin: 0;
+  letter-spacing: 0.2px;
+  color: var(--primary-2);
+}
+
+.hero__subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  letter-spacing: 0.22em;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.hero__headline {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  margin: 14px 0 10px;
+  font-size: clamp(34px, 4.2vw, 56px);
+  letter-spacing: 0.2px;
+}
+
+.hero__subtext {
+  margin: 0;
+  color: var(--muted);
+  max-width: 58ch;
+}
+
+.hero__cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.hero__note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: var(--muted-2);
+  font-size: 14px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, var(--accent), transparent 65%);
+  box-shadow: 0 10px 24px rgba(116, 136, 237, 0.18);
+}
+
+html[data-theme="christmas"] .dot {
+  background: radial-gradient(circle at 30% 30%, var(--accent), transparent 68%);
+  box-shadow: 0 14px 32px rgba(200, 162, 90, 0.18);
+}
+
+/* Cozy glow behind hero/CTA in Christmas Mode */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -40px 0 auto 0;
+  height: 420px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity var(--dur) var(--ease);
+}
+
+html[data-theme="christmas"] .hero::before {
+  opacity: 1;
+  background: radial-gradient(700px 340px at 28% 35%, rgba(200, 162, 90, 0.16), transparent 60%),
+    radial-gradient(560px 320px at 42% 55%, rgba(210, 204, 227, 0.12), transparent 62%);
+  filter: blur(0.2px);
+}
+
+.heroCard {
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+html[data-theme="christmas"] .heroCard {
+  background: rgba(21, 16, 36, 0.72);
+}
+
+.heroCard__title {
+  margin: 0 0 10px;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.heroCard__list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.heroCard__list li {
+  margin: 8px 0;
+}
+
+.heroCard__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.pill {
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 10px;
+  background: rgba(210, 204, 227, 0.20);
+}
+
+html[data-theme="christmas"] .pill {
+  background: rgba(200, 162, 90, 0.10);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn--primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--c-indigo), var(--c-purple));
+  box-shadow: 0 18px 40px rgba(53, 26, 109, 0.20);
+}
+
+html[data-theme="christmas"] .btn--primary {
+  color: rgba(244, 240, 234, 0.96);
+  background: linear-gradient(135deg, rgba(200, 162, 90, 0.92), rgba(179, 90, 96, 0.72));
+  box-shadow: 0 22px 56px rgba(200, 162, 90, 0.16);
+}
+
+.btn--ghost {
+  color: var(--text);
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(10px);
+}
+
+html[data-theme="christmas"] .btn--ghost {
+  background: rgba(21, 16, 36, 0.52);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn--primary:hover {
+  box-shadow: 0 22px 54px rgba(53, 26, 109, 0.24);
+}
+
+.btn--ghost:hover {
+  border-color: rgba(116, 136, 237, 0.36);
+  background: rgba(210, 204, 227, 0.32);
+}
+
+html[data-theme="christmas"] .btn--ghost:hover {
+  border-color: rgba(200, 162, 90, 0.32);
+  background: rgba(200, 162, 90, 0.08);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* About */
+.aboutGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.aboutCard {
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.60);
+  box-shadow: 0 18px 46px rgba(3, 2, 5, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+html[data-theme="christmas"] .aboutCard {
+  background: rgba(21, 16, 36, 0.66);
+}
+
+.aboutCard h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+}
+
+.aboutCard p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Services cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 18px 54px rgba(3, 2, 5, 0.09);
+  backdrop-filter: blur(10px);
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+html[data-theme="christmas"] .card {
+  background: rgba(21, 16, 36, 0.66);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 74px rgba(3, 2, 5, 0.12);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.card__detail {
+  margin-top: 12px !important;
+  color: var(--muted-2);
+  font-size: 13px;
+}
+
+/* Testimonials */
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.quote {
+  margin: 0;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.60);
+  box-shadow: 0 18px 54px rgba(3, 2, 5, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+html[data-theme="christmas"] .quote {
+  background: rgba(21, 16, 36, 0.64);
+}
+
+.quote blockquote {
+  margin: 0 0 12px;
+  color: var(--text);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.quote figcaption {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Contact */
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.contactCard,
+.contactAside__box {
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 18px 54px rgba(3, 2, 5, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+html[data-theme="christmas"] .contactCard,
+html[data-theme="christmas"] .contactAside__box {
+  background: rgba(21, 16, 36, 0.66);
+}
+
+.small {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.form {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.form label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+input,
+textarea {
+  font: inherit;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 12px;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+html[data-theme="christmas"] input,
+html[data-theme="christmas"] textarea {
+  background: rgba(14, 11, 22, 0.52);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(3, 2, 5, 0.42);
+}
+
+html[data-theme="christmas"] input::placeholder,
+html[data-theme="christmas"] textarea::placeholder {
+  color: rgba(244, 240, 234, 0.44);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(116, 136, 237, 0.55);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+html[data-theme="christmas"] input:focus,
+html[data-theme="christmas"] textarea:focus {
+  border-color: rgba(200, 162, 90, 0.52);
+  background: rgba(14, 11, 22, 0.68);
+}
+
+.form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.form__note {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  min-height: 18px; /* avoids layout shift when message appears */
+}
+
+.contactAside h3,
+.contactCard h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-serif);
+}
+
+.checklist {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.checklist li {
+  margin: 8px 0;
+}
+
+.textLink {
+  color: var(--primary-2);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+html[data-theme="christmas"] .textLink {
+  color: var(--accent);
+}
+
+.sep {
+  display: inline-block;
+  margin: 0 8px;
+  opacity: 0.6;
+}
+
+/* Footer */
+.footer {
+  position: relative;
+  z-index: 3;
+  padding: 28px 0 44px;
+  color: var(--muted);
+}
+
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+
+/* Scroll-reveal animation (JS adds .is-visible) */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 940px) {
+  .nav__links {
+    display: none; /* keep it simple for now */
+  }
+  .brand {
+    min-width: auto;
+  }
+  .hero__grid {
+    grid-template-columns: 1fr;
+  }
+  .aboutGrid,
+  .cards,
+  .quotes {
+    grid-template-columns: 1fr;
+  }
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+  .hero__headline {
+    font-size: clamp(30px, 7vw, 48px);
+  }
+}
+
+@media (max-width: 420px) {
+  .nav {
+    padding-inline: 10px;
+  }
+  .brand__logo {
+    width: 40px;
+    height: 40px;
+  }
+  .nav__toggleLabel {
+    display: none;
+  }
+}
+
+/* Respect prefers-reduced-motion: reduce animations & smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  .decor--tl,
+  .decor--br,
+  .decor--d1,
+  .decor--d2 {
+    animation: none;
+  }
+
+  .btn,
+  .nav__links a {
+    transition: none;
+  }
+
+  .snow {
+    display: none;
+  }
+}
+
