@@ -40,7 +40,7 @@
   --font-script: "Great Vibes", "Playfair Display", ui-serif, Georgia, serif;
 
   /* Layout */
-  --container: 1120px;
+  --container: 1100px;
   --radius: 18px;
   --radius-sm: 14px;
 
@@ -90,16 +90,17 @@ body {
   min-height: 100%;
   font-family: var(--font-sans);
   color: var(--text);
-  background: radial-gradient(1200px 700px at 20% 0%, rgba(210, 204, 227, 0.35), transparent 60%),
-    radial-gradient(1000px 700px at 90% 40%, rgba(116, 136, 237, 0.18), transparent 58%),
+  line-height: 1.6;
+  background: radial-gradient(1200px 700px at 20% 0%, rgba(210, 204, 227, 0.14), transparent 60%),
+    radial-gradient(1000px 700px at 90% 40%, rgba(116, 136, 237, 0.08), transparent 58%),
     linear-gradient(180deg, var(--bg), var(--bg));
   overflow-x: hidden;
 }
 
 html[data-theme="christmas"] body {
-  background: radial-gradient(1100px 700px at 18% 0%, rgba(210, 204, 227, 0.12), transparent 60%),
-    radial-gradient(1200px 700px at 85% 45%, rgba(200, 162, 90, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 40% 80%, rgba(179, 90, 96, 0.08), transparent 62%),
+  background: radial-gradient(1100px 700px at 18% 0%, rgba(210, 204, 227, 0.08), transparent 60%),
+    radial-gradient(1200px 700px at 85% 45%, rgba(200, 162, 90, 0.06), transparent 60%),
+    radial-gradient(900px 600px at 40% 80%, rgba(179, 90, 96, 0.05), transparent 62%),
     linear-gradient(180deg, var(--bg), var(--bg));
 }
 
@@ -137,8 +138,11 @@ html[data-theme="christmas"] ::selection {
 }
 
 .container {
-  width: min(var(--container), calc(100% - 40px));
+  /* Consistent, centered content wrapper (critical for readability) */
+  max-width: var(--container);
   margin-inline: auto;
+  padding-inline: 20px;
+  width: 100%;
 }
 
 /* Decorative layer (butterflies + florals) */
@@ -157,13 +161,15 @@ html[data-theme="christmas"] ::selection {
 /* Corner clusters */
 .decor--corner {
   width: clamp(210px, 26vw, 340px);
-  opacity: 0.98;
-  mix-blend-mode: multiply;
+  /* Reduced dominance (calm background only) */
+  opacity: 0.08;
+  mix-blend-mode: normal;
 }
 
 html[data-theme="christmas"] .decor--corner {
-  mix-blend-mode: screen;
-  filter: saturate(1.1) drop-shadow(0 10px 24px rgba(200, 162, 90, 0.10));
+  opacity: 0.07;
+  mix-blend-mode: normal;
+  filter: none;
 }
 
 .decor--tl {
@@ -181,16 +187,12 @@ html[data-theme="christmas"] .decor--corner {
 
 /* Larger faint butterflies drifting behind sections */
 .decor--drift {
-  width: clamp(280px, 42vw, 560px);
-  opacity: 0.45;
-  mix-blend-mode: multiply;
-  filter: blur(0.2px);
+  /* These were visually heavy in practice — hide for a calmer page. */
+  display: none;
 }
 
 html[data-theme="christmas"] .decor--drift {
-  mix-blend-mode: screen;
-  opacity: 0.22;
-  filter: blur(0.6px) drop-shadow(0 12px 36px rgba(210, 204, 227, 0.10));
+  display: none;
 }
 
 .decor--d1 {
@@ -260,13 +262,13 @@ html[data-theme="christmas"] .decor--drift {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 4; /* overlay above content, below header */
+  z-index: 1; /* behind main content, above base background */
   opacity: 0;
   transition: opacity var(--dur-fast) var(--ease);
 }
 
 html[data-theme="christmas"] .snow {
-  opacity: 1;
+  opacity: 0.65; /* subtle */
 }
 
 /* Header / nav */
@@ -289,9 +291,10 @@ html[data-theme="christmas"] .site-header {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 14px 18px;
-  width: min(var(--container), calc(100% - 24px));
+  /* Align nav content with the same centered container system */
+  max-width: var(--container);
   margin-inline: auto;
+  padding: 14px 20px;
 }
 
 .brand {
@@ -449,6 +452,7 @@ html[data-theme="christmas"] .switch input:checked ~ .switch__track {
 .sectionHead p {
   margin: 0;
   color: var(--muted);
+  max-width: 68ch;
 }
 
 /* Hero */
@@ -486,7 +490,7 @@ html[data-theme="christmas"] .hero__logo {
 
 .hero__script {
   font-family: var(--font-script);
-  font-size: clamp(32px, 4.2vw, 52px);
+  font-size: clamp(28px, 4vw, 46px);
   line-height: 1.0;
   margin: 0;
   letter-spacing: 0.2px;
@@ -505,14 +509,14 @@ html[data-theme="christmas"] .hero__logo {
   font-family: var(--font-serif);
   font-weight: 600;
   margin: 14px 0 10px;
-  font-size: clamp(34px, 4.2vw, 56px);
+  font-size: clamp(32px, 3.8vw, 50px);
   letter-spacing: 0.2px;
 }
 
 .hero__subtext {
   margin: 0;
   color: var(--muted);
-  max-width: 58ch;
+  max-width: 66ch;
 }
 
 .hero__cta {
