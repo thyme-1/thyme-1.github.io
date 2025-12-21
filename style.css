@@ -933,6 +933,82 @@ html[data-theme="christmas"] .textLink {
   padding-top: 18px;
 }
 
+/* Floating "Back to top" pill button */
+.toTop {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 7;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.70);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  box-shadow: 0 18px 48px rgba(3, 2, 5, 0.12);
+
+  /* Hidden by default; JS toggles .is-visible */
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+html[data-theme="christmas"] .toTop {
+  background: rgba(21, 16, 36, 0.72);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.42);
+}
+
+.toTop.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.toTop:hover {
+  border-color: rgba(116, 136, 237, 0.34);
+  box-shadow: 0 22px 66px rgba(3, 2, 5, 0.14);
+}
+
+html[data-theme="christmas"] .toTop:hover {
+  border-color: rgba(200, 162, 90, 0.32);
+}
+
+.toTop__icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(116, 136, 237, 0.16);
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1;
+}
+
+html[data-theme="christmas"] .toTop__icon {
+  background: rgba(200, 162, 90, 0.14);
+}
+
+.toTop__text {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toTop {
+    transition: none;
+    transform: none;
+  }
+}
+
 /* Scroll-reveal animation (JS adds .is-visible) */
 .reveal {
   opacity: 0;
