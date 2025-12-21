@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Butterfly Bloom Coaching</title>
+    <meta
+      name="description"
+      content="Calm, premium life coaching to help you feel grounded, clear, and gently empowered."
+    />
+
+    <!-- Google Fonts (allowed) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <!--
+    Theme switching:
+    - Default theme: no attribute (light).
+    - Christmas theme: <html data-theme="christmas">
+    JavaScript toggles this and persists it in localStorage.
+  -->
+  <body>
+    <!-- Decorative background layer (SVG, lightweight) -->
+    <div class="decor-layer" aria-hidden="true">
+      <!-- Corner cluster: top-left -->
+      <svg class="decor decor--corner decor--tl" viewBox="0 0 260 260" role="presentation">
+        <defs>
+          <linearGradient id="petalGrad" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="var(--c-lavender)" stop-opacity="0.9" />
+            <stop offset="1" stop-color="var(--c-mauve)" stop-opacity="0.85" />
+          </linearGradient>
+          <linearGradient id="wingGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="var(--c-periwinkle)" stop-opacity="0.75" />
+            <stop offset="1" stop-color="var(--c-purple)" stop-opacity="0.7" />
+          </linearGradient>
+        </defs>
+
+        <!-- Soft botanical strokes -->
+        <path
+          d="M40 215c28-60 55-85 105-120 38-26 74-34 110-38"
+          fill="none"
+          stroke="var(--c-indigo)"
+          stroke-opacity="0.14"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
+        <path
+          d="M56 226c20-52 55-84 95-112"
+          fill="none"
+          stroke="var(--c-indigo)"
+          stroke-opacity="0.10"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+
+        <!-- A few petals / flowers -->
+        <g opacity="0.92">
+          <circle cx="78" cy="88" r="8" fill="var(--c-periwinkle)" opacity="0.55" />
+          <path
+            d="M78 52c12 16 14 30 0 44-14-14-12-28 0-44Z"
+            fill="url(#petalGrad)"
+            opacity="0.75"
+          />
+          <path
+            d="M50 82c16-12 30-14 44 0-14 14-28 12-44 0Z"
+            fill="url(#petalGrad)"
+            opacity="0.70"
+          />
+          <path
+            d="M106 82c-16-12-30-14-44 0 14 14 28 12 44 0Z"
+            fill="url(#petalGrad)"
+            opacity="0.70"
+          />
+          <path
+            d="M78 112c-12-16-14-30 0-44 14 14 12 28 0 44Z"
+            fill="url(#petalGrad)"
+            opacity="0.68"
+          />
+        </g>
+
+        <!-- Butterfly -->
+        <g transform="translate(145 60) rotate(-8)" opacity="0.85">
+          <path
+            d="M42 40c18-18 42-14 54 4 12 18 4 38-18 44-16 4-26-6-36-24Z"
+            fill="url(#wingGrad)"
+          />
+          <path
+            d="M42 40c-18-18-42-14-54 4-12 18-4 38 18 44 16 4 26-6 36-24Z"
+            fill="url(#wingGrad)"
+            opacity="0.88"
+          />
+          <path
+            d="M42 38c6 16 6 34 0 52"
+            stroke="var(--c-indigo)"
+            stroke-opacity="0.20"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <circle cx="42" cy="42" r="4" fill="var(--c-nearblack)" opacity="0.25" />
+        </g>
+      </svg>
+
+      <!-- Corner cluster: bottom-right -->
+      <svg class="decor decor--corner decor--br" viewBox="0 0 260 260" role="presentation">
+        <defs>
+          <linearGradient id="petalGrad2" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="var(--c-lavender)" stop-opacity="0.9" />
+            <stop offset="1" stop-color="var(--c-purple)" stop-opacity="0.8" />
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M20 45c54 22 88 56 128 108 28 36 52 70 92 92"
+          fill="none"
+          stroke="var(--c-indigo)"
+          stroke-opacity="0.12"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
+        <g opacity="0.86">
+          <circle cx="160" cy="160" r="9" fill="var(--c-periwinkle)" opacity="0.42" />
+          <path d="M160 128c14 18 16 34 0 50-16-16-14-32 0-50Z" fill="url(#petalGrad2)" opacity="0.70" />
+          <path d="M130 160c18-14 34-16 50 0-16 16-32 14-50 0Z" fill="url(#petalGrad2)" opacity="0.66" />
+          <path d="M190 160c-18-14-34-16-50 0 16 16 32 14 50 0Z" fill="url(#petalGrad2)" opacity="0.66" />
+          <path d="M160 194c-14-18-16-34 0-50 16 16 14 32 0 50Z" fill="url(#petalGrad2)" opacity="0.63" />
+        </g>
+
+        <!-- Butterfly silhouette (faint) -->
+        <g transform="translate(70 40) rotate(12)" opacity="0.42">
+          <path
+            d="M55 60c24-22 52-10 62 10 10 20 0 44-28 50-20 4-30-10-34-30Z"
+            fill="var(--c-lavender)"
+          />
+          <path
+            d="M55 60c-24-22-52-10-62 10-10 20 0 44 28 50 20 4 30-10 34-30Z"
+            fill="var(--c-lavender)"
+            opacity="0.92"
+          />
+          <path
+            d="M55 56c6 18 6 38 0 58"
+            stroke="var(--c-indigo)"
+            stroke-opacity="0.18"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </g>
+      </svg>
+
+      <!-- Larger drifting butterfly silhouettes behind sections -->
+      <svg class="decor decor--drift decor--d1" viewBox="0 0 240 180" role="presentation">
+        <path
+          d="M120 80c34-34 74-18 88 8 14 26 4 58-34 66-24 6-40-10-54-38Z"
+          fill="var(--c-lavender)"
+          opacity="0.26"
+        />
+        <path
+          d="M120 80c-34-34-74-18-88 8-14 26-4 58 34 66 24 6 40-10 54-38Z"
+          fill="var(--c-lavender)"
+          opacity="0.22"
+        />
+      </svg>
+      <svg class="decor decor--drift decor--d2" viewBox="0 0 240 180" role="presentation">
+        <path
+          d="M120 78c34-34 74-18 88 8 14 26 4 58-34 66-24 6-40-10-54-38Z"
+          fill="var(--c-periwinkle)"
+          opacity="0.18"
+        />
+        <path
+          d="M120 78c-34-34-74-18-88 8-14 26-4 58 34 66 24 6 40-10 54-38Z"
+          fill="var(--c-periwinkle)"
+          opacity="0.14"
+        />
+      </svg>
+    </div>
+
+    <!-- Snow overlay (only created/animated in Christmas Mode via script.js) -->
+    <canvas id="snow" class="snow" aria-hidden="true"></canvas>
+
+    <header class="site-header" id="top">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="#top">
+          <img class="brand__logo" src="assets/logo.png" alt="Butterfly Bloom Coaching logo" />
+          <span class="brand__text">
+            <span class="brand__name">Butterfly Bloom</span>
+            <span class="brand__tag">Life Coaching</span>
+          </span>
+        </a>
+
+        <div class="nav__links">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <!-- Christmas Mode toggle (top-right) -->
+        <div class="nav__toggle" title="Toggle Christmas Mode">
+          <span class="nav__toggleLabel">Christmas Mode</span>
+          <label class="switch">
+            <input id="themeToggle" type="checkbox" aria-label="Toggle Christmas Mode" />
+            <span class="switch__track" aria-hidden="true"></span>
+            <span class="switch__thumb" aria-hidden="true"></span>
+          </label>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- 1) Hero -->
+      <section class="section hero" aria-label="Hero">
+        <div class="container hero__grid">
+          <div class="hero__left reveal">
+            <div class="hero__logoRow">
+              <img class="hero__logo" src="assets/logo.png" alt="" aria-hidden="true" />
+              <div class="hero__brand">
+                <p class="hero__script">Butterfly Bloom</p>
+                <p class="hero__subtitle">Life Coaching</p>
+              </div>
+            </div>
+
+            <h1 class="hero__headline">
+              A gentle place to breathe, reset, and move forward—with clarity.
+            </h1>
+            <p class="hero__subtext">
+              Supportive, premium coaching for people who feel stuck, overwhelmed, or ready for a new chapter.
+              We’ll create calm momentum—one thoughtful step at a time.
+            </p>
+
+            <div class="hero__cta">
+              <a class="btn btn--primary" href="#contact">Book a Free Consultation</a>
+              <a class="btn btn--ghost" href="#services">Explore Services</a>
+            </div>
+
+            <p class="hero__note">
+              <span class="dot" aria-hidden="true"></span>
+              Warm, confidential, judgment-free support.
+            </p>
+          </div>
+
+          <div class="hero__right reveal">
+            <div class="heroCard" role="presentation">
+              <h2 class="heroCard__title">What we’ll focus on</h2>
+              <ul class="heroCard__list">
+                <li>Feeling grounded and emotionally steady</li>
+                <li>Clarity around your next right step</li>
+                <li>Boundaries, confidence, and self-trust</li>
+                <li>Gentle accountability that actually feels kind</li>
+              </ul>
+              <div class="heroCard__meta">
+                <span class="pill">1:1 Sessions</span>
+                <span class="pill">Online</span>
+                <span class="pill">Flexible Scheduling</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2) About -->
+      <section class="section" id="about" aria-label="About">
+        <div class="container">
+          <div class="sectionHead reveal">
+            <h2>About</h2>
+            <p>
+              Hi—I'm <strong>[Your Name]</strong>. I support sensitive, thoughtful humans who want life to feel
+              softer, clearer, and more aligned.
+            </p>
+          </div>
+
+          <div class="aboutGrid">
+            <div class="aboutCard reveal">
+              <h3>Warm, human coaching</h3>
+              <p>
+                This is a calm space to speak honestly and be met with compassion. We’ll slow things down, find the
+                real root of what’s happening, and build steady steps that fit your life.
+              </p>
+            </div>
+            <div class="aboutCard reveal">
+              <h3>Practical, but never cold</h3>
+              <p>
+                You’ll leave sessions with clarity, reflection prompts, and gentle action. We’ll keep it realistic—
+                and we’ll keep it kind.
+              </p>
+            </div>
+            <div class="aboutCard reveal">
+              <h3>Your pace, your story</h3>
+              <p>
+                There’s no “fixing” you here. We work with your nervous system, values, and season of life—so growth
+                feels supportive, not forceful.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3) Services -->
+      <section class="section section--tint" id="services" aria-label="Services">
+        <div class="container">
+          <div class="sectionHead reveal">
+            <h2>Services</h2>
+            <p>Choose the level of support that feels most nourishing right now.</p>
+          </div>
+
+          <div class="cards">
+            <article class="card reveal">
+              <h3>Free Consultation (20 min)</h3>
+              <p>
+                A gentle first conversation. Share what you’re navigating and we’ll see if we’re a good fit—no
+                pressure, just clarity.
+              </p>
+              <p class="card__detail">Best for: first-time clients</p>
+            </article>
+
+            <article class="card reveal">
+              <h3>1:1 Coaching Session (60 min)</h3>
+              <p>
+                A focused, supportive session to help you unpack what’s heavy, find your next right step, and feel
+                calm momentum again.
+              </p>
+              <p class="card__detail">Best for: clarity, boundaries, confidence</p>
+            </article>
+
+            <article class="card reveal">
+              <h3>Gentle Growth Package</h3>
+              <p>
+                A premium container for deeper transformation: recurring sessions, between-session check-ins, and
+                a personalized plan you can actually follow.
+              </p>
+              <p class="card__detail">Best for: ongoing support & accountability</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4) Testimonials -->
+      <section class="section" id="testimonials" aria-label="Testimonials">
+        <div class="container">
+          <div class="sectionHead reveal">
+            <h2>Testimonials</h2>
+            <p>Placeholder words for now—swap these with real client stories when you’re ready.</p>
+          </div>
+
+          <div class="quotes">
+            <figure class="quote reveal">
+              <blockquote>
+                “I came in overwhelmed and left feeling like I could finally breathe. The clarity I gained changed the
+                way I make decisions.”
+              </blockquote>
+              <figcaption>— Client A</figcaption>
+            </figure>
+            <figure class="quote reveal">
+              <blockquote>
+                “This coaching felt warm and grounding—not pushy. I learned how to trust myself again.”
+              </blockquote>
+              <figcaption>— Client B</figcaption>
+            </figure>
+            <figure class="quote reveal">
+              <blockquote>
+                “I loved the gentle structure. Small steps, big shifts. I feel calmer, more confident, and more me.”
+              </blockquote>
+              <figcaption>— Client C</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5) Contact -->
+      <section class="section section--tint" id="contact" aria-label="Contact">
+        <div class="container">
+          <div class="sectionHead reveal">
+            <h2>Contact</h2>
+            <p>
+              Email: <a class="textLink" href="mailto:you@example.com">you@example.com</a>
+              <span class="sep" aria-hidden="true">•</span>
+              Response time: 1–2 business days
+            </p>
+          </div>
+
+          <div class="contactGrid">
+            <div class="contactCard reveal">
+              <h3>Send a message</h3>
+              <p class="small">
+                This form is frontend-only (no backend). It creates an email draft in your mail app as a fallback.
+              </p>
+
+              <form class="form" id="contactForm">
+                <label>
+                  <span>Your name</span>
+                  <input name="name" type="text" autocomplete="name" placeholder="Jane Doe" />
+                </label>
+                <label>
+                  <span>Your email</span>
+                  <input name="email" type="email" autocomplete="email" placeholder="jane@email.com" />
+                </label>
+                <label>
+                  <span>Message</span>
+                  <textarea
+                    name="message"
+                    rows="5"
+                    placeholder="A few lines about what you're looking for support with..."
+                  ></textarea>
+                </label>
+                <div class="form__actions">
+                  <button class="btn btn--primary" type="submit">Create Email Draft</button>
+                  <a class="btn btn--ghost" href="mailto:you@example.com?subject=Coaching%20Inquiry">Mailto Fallback</a>
+                </div>
+                <p class="form__note" id="formNote" aria-live="polite"></p>
+              </form>
+            </div>
+
+            <aside class="contactAside reveal">
+              <div class="contactAside__box">
+                <h3>Before we meet</h3>
+                <ul class="checklist">
+                  <li>What do you want to feel more of?</li>
+                  <li>What feels heavy or unclear lately?</li>
+                  <li>What would “supported” look like for you?</li>
+                </ul>
+                <p class="small">
+                  You don’t need perfect words—just honesty. We’ll begin gently.
+                </p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <p>
+          © <span id="year"></span> Butterfly Bloom Life Coaching. All rights reserved.
+        </p>
+        <a class="textLink" href="#top">Back to top</a>
+      </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
