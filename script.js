@@ -236,6 +236,38 @@
   });
 
   // -----------------------------
+  // Floating "Back to top" pill
+  // -----------------------------
+  const toTop = document.getElementById("toTop");
+  const TOP_SHOW_AFTER_PX = 400;
+
+  function updateToTopVisibility() {
+    if (!toTop) return;
+    const show = window.scrollY > TOP_SHOW_AFTER_PX;
+    toTop.classList.toggle("is-visible", show);
+  }
+
+  // Keep it responsive without spamming layout on every scroll tick.
+  let toTopTicking = false;
+  window.addEventListener("scroll", () => {
+    if (toTopTicking) return;
+    toTopTicking = true;
+    window.requestAnimationFrame(() => {
+      updateToTopVisibility();
+      toTopTicking = false;
+    });
+  });
+  updateToTopVisibility();
+
+  // Reliable scroll-to-top (still keeps #top for no-JS fallback)
+  if (toTop) {
+    toTop.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    });
+  }
+
+  // -----------------------------
   // Initialize theme from localStorage + wire the toggle
   //
   // IMPORTANT:
