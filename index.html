@@ -378,7 +378,8 @@
           <div class="sectionHead reveal">
             <h2>Contact</h2>
             <p>
-              Email: <a class="textLink" href="mailto:you@example.com">you@example.com</a>
+              Email:
+              <a class="textLink" href="mailto:contact@heidilifecoaching.com">contact@heidilifecoaching.com</a>
               <span class="sep" aria-hidden="true">•</span>
               Response time: 1–2 business days
             </p>
@@ -388,31 +389,50 @@
             <div class="contactCard reveal">
               <h3>Send a message</h3>
               <p class="small">
-                This form is frontend-only (no backend). It creates an email draft in your mail app as a fallback.
+                This form uses Formspree (frontend-only). Please don’t include sensitive personal information.
               </p>
 
-              <form class="form" id="contactForm">
-                <label>
+              <form
+                class="form"
+                id="contactForm"
+                method="POST"
+                action="https://formspree.io/f/xojannzd"
+              >
+                <label for="name">
                   <span>Your name</span>
-                  <input name="name" type="text" autocomplete="name" placeholder="Jane Doe" />
                 </label>
-                <label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" required />
+
+                <label for="email">
                   <span>Your email</span>
-                  <input name="email" type="email" autocomplete="email" placeholder="jane@email.com" />
                 </label>
-                <label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="jane@email.com"
+                  required
+                />
+
+                <label for="message">
                   <span>Message</span>
-                  <textarea
-                    name="message"
-                    rows="5"
-                    placeholder="A few lines about what you're looking for support with..."
-                  ></textarea>
                 </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  placeholder="A few lines about what you're looking for support with..."
+                  required
+                ></textarea>
                 <div class="form__actions">
-                  <button class="btn btn--primary" type="submit">Create Email Draft</button>
-                  <a class="btn btn--ghost" href="mailto:you@example.com?subject=Coaching%20Inquiry">Mailto Fallback</a>
+                  <button class="btn btn--primary" type="submit">Send Message</button>
                 </div>
                 <p class="form__note" id="formNote" aria-live="polite"></p>
+                <p class="small">
+                  Having trouble?
+                  <a class="textLink" href="mailto:contact@heidilifecoaching.com">Email us directly</a>.
+                </p>
               </form>
             </div>
 

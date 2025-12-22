@@ -46,59 +46,59 @@
   }
 
   // -----------------------------
-  // Contact form (mailto draft)
+  // Contact form (Formspree + fallback mailto link)
   // -----------------------------
   const contactForm = document.getElementById("contactForm");
   const formNote = document.getElementById("formNote");
-  const CONTACT_EMAIL = "you@example.com"; // <-- Customize this later (one place!)
-
-  // Replace placeholder email in the page so you only update CONTACT_EMAIL above.
-  // (This keeps index.html beginner-friendly while avoiding duplicated edits.)
-  for (const a of document.querySelectorAll('a[href^="mailto:"]')) {
-    const rawHref = a.getAttribute("href") || "";
-    if (rawHref.includes("you@example.com")) {
-      a.setAttribute("href", rawHref.replaceAll("you@example.com", CONTACT_EMAIL));
-    }
-    if (a.textContent?.includes("you@example.com")) {
-      a.textContent = a.textContent.replaceAll("you@example.com", CONTACT_EMAIL);
-    }
-  }
 
   if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+    function setNote(kind, message) {
+      if (!formNote) return;
+      formNote.classList.remove("form__note--success", "form__note--error");
+      if (kind === "success") formNote.classList.add("form__note--success");
+      if (kind === "error") formNote.classList.add("form__note--error");
+      formNote.textContent = message;
+    }
+
+    contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const fd = new FormData(contactForm);
-      const name = String(fd.get("name") ?? "").trim();
-      const email = String(fd.get("email") ?? "").trim();
-      const message = String(fd.get("message") ?? "").trim();
-
-      const subject = `Coaching Inquiry${name ? ` — ${name}` : ""}`;
-      const bodyLines = [
-        "Hello!",
-        "",
-        "I'd like to book a free consultation / learn more about coaching.",
-        "",
-        `Name: ${name || "(not provided)"}`,
-        `Email: ${email || "(not provided)"}`,
-        "",
-        "Message:",
-        message || "(no message)",
-        "",
-        "— Sent from the Butterfly Bloom website",
-      ];
-
-      const mailto =
-        `mailto:${encodeURIComponent(CONTACT_EMAIL)}` +
-        `?subject=${encodeURIComponent(subject)}` +
-        `&body=${encodeURIComponent(bodyLines.join("\n"))}`;
-
-      if (formNote) {
-        formNote.textContent = "Opening your email app with a drafted message…";
+      // Basic client-side validation (uses native browser rules)
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        setNote("error", "Please fill out all required fields.");
+        return;
       }
 
-      // Using location.href keeps it simple and works on GitHub Pages.
-      window.location.href = mailto;
+      if (submitBtn) submitBtn.disabled = true;
+      setNote(null, "Sending…");
+
+      try {
+        const res = await fetch(contactForm.action, {
+          method: "POST",
+          body: new FormData(contactForm),
+          headers: { Accept: "application/json" },
+        });
+
+        if (res.ok) {
+          contactForm.reset();
+          setNote("success", "Thank you—your message has been sent. We’ll reply soon.");
+        } else {
+          setNote(
+            "error",
+            "Sorry—something went wrong sending your message. Please try again, or use the email link below."
+          );
+        }
+      } catch {
+        setNote(
+          "error",
+          "Network issue—couldn’t send right now. Please try again, or use the email link below."
+        );
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
     });
   }
 

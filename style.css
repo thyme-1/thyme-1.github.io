@@ -883,6 +883,38 @@ html[data-theme="christmas"] textarea:focus {
   min-height: 18px; /* avoids layout shift when message appears */
 }
 
+/* Inline form feedback (soft, premium) */
+.form__note--success,
+.form__note--error {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+}
+
+.form__note--success {
+  border-color: rgba(116, 136, 237, 0.30);
+  background: rgba(116, 136, 237, 0.08);
+}
+
+.form__note--error {
+  border-color: rgba(159, 121, 151, 0.28);
+  background: rgba(159, 121, 151, 0.08);
+}
+
+html[data-theme="christmas"] .form__note--success {
+  border-color: rgba(200, 162, 90, 0.26);
+  background: rgba(200, 162, 90, 0.08);
+}
+
+html[data-theme="christmas"] .form__note--error {
+  border-color: rgba(179, 90, 96, 0.26);
+  background: rgba(179, 90, 96, 0.08);
+}
+
 .contactAside h3,
 .contactCard h3 {
   margin: 0 0 8px;
