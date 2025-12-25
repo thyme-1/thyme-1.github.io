@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Butterfly favicon (calm, minimal mark) for Hope with Heidi.
+  - SVG is preferred for crisp rendering across modern browsers.
+  - PNG fallbacks are generated in /assets for broader mobile support.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Butterfly">
+  <title>Butterfly</title>
+  <!-- Two-tone for legibility on light/dark tab bars -->
+  <g stroke="#2F2A3A" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Wings -->
+    <path
+      d="M32 30
+         C22 18 10 18 8 30
+         C6 42 16 50 26 44
+         C30 41 31 36 32 30 Z"
+      fill="#A79AD6"
+    />
+    <path
+      d="M32 30
+         C42 18 54 18 56 30
+         C58 42 48 50 38 44
+         C34 41 33 36 32 30 Z"
+      fill="#A79AD6"
+    />
+
+    <!-- Body -->
+    <path d="M32 24 C35 30 35 42 32 48 C29 42 29 30 32 24 Z" fill="#2F2A3A" stroke="none" />
+    <circle cx="32" cy="22" r="3" fill="#2F2A3A" stroke="none" />
+
+    <!-- Antennae -->
+    <path d="M31 20 C28 16 25 15 23 14" fill="none" />
+    <path d="M33 20 C36 16 39 15 41 14" fill="none" />
+  </g>
+</svg>
