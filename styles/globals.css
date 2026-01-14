@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Senior-friendly defaults */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #fde047;
+  color: #000;
+}
