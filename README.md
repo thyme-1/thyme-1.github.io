@@ -1,22 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+## Resident Dashboard Prototype (Next.js + Tailwind)
+
+Resident-facing dashboard prototype for retirement / assisted-living communities.
+
+### Features
+
+- **Senior-friendly UI**: large text, high contrast, simple layout
+- **Dashboard (`/`)**:
+  - Clock + date at the top
+  - Today’s meals (breakfast/lunch/dinner)
+  - Today’s events/activities
+  - Photo slideshow (uses `public/photos/`)
+- **Admin editor (`/admin`)**:
+  - Password protected via `ADMIN_PASSWORD`
+  - Edits meals/events/photos and saves to **localStorage** (demo/MVP)
+- **Single JSON source of truth**: `data/dashboard.json` (safe to bundle/read on the frontend)
 
 ## Getting Started
 
-First, run the development server:
+### Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Admin password (local)
+
+Create a `.env.local` file:
+
+```bash
+ADMIN_PASSWORD=change-me
+```
+
+Then open `http://localhost:3000/admin` and enter the password to unlock editing.
+
+> Note: Admin edits are stored in **localStorage**, so they are per-device/per-browser for demo purposes.
 
 [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
@@ -35,6 +55,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Deploying
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+- Push this repo to GitHub and import it into Vercel.
+- In **Project Settings → Environment Variables**, add:
+  - `ADMIN_PASSWORD` = your chosen admin password
+- Deploy.
+
+### Content editing & storage
+
+- **Base content** lives in `data/dashboard.json` and is bundled for safe static reading.
+- **Edits from `/admin`** are saved to localStorage key `resident-dashboard:data:v1`.
+- For a real system (Firebase / API / multi-home support), replace the localStorage save/load with a backend write/read.

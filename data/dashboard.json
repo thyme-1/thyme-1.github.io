@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "home": {
+    "name": "Evergreen Senior Living",
+    "timezone": "America/New_York"
+  },
+  "today": {
+    "meals": {
+      "breakfast": "Oatmeal, scrambled eggs, fresh fruit, coffee/tea",
+      "lunch": "Chicken noodle soup, turkey sandwich, garden salad",
+      "dinner": "Baked salmon, roasted vegetables, mashed potatoes"
+    },
+    "events": [
+      {
+        "id": "event-1",
+        "time": "10:00 AM",
+        "title": "Morning Stretch",
+        "location": "Activity Room",
+        "description": "Gentle stretching and breathing exercises."
+      },
+      {
+        "id": "event-2",
+        "time": "1:30 PM",
+        "title": "Bingo",
+        "location": "Dining Hall",
+        "description": "Prizes available. All skill levels welcome."
+      },
+      {
+        "id": "event-3",
+        "time": "4:00 PM",
+        "title": "Live Piano Music",
+        "location": "Lobby",
+        "description": "Requests welcome."
+      }
+    ],
+    "photos": [
+      { "src": "/photos/01-garden.svg", "alt": "Garden walkway" },
+      { "src": "/photos/02-activities.svg", "alt": "Group activity" },
+      { "src": "/photos/03-dining.svg", "alt": "Dining room" },
+      { "src": "/photos/04-library.svg", "alt": "Library corner" }
+    ]
+  }
+}
+

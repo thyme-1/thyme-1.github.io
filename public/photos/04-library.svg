@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5c2c06"/>
+      <stop offset="1" stop-color="#b46a2a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="600" fill="url(#g)"/>
+  <rect x="120" y="150" width="1360" height="360" rx="28" fill="#ffffff" opacity="0.14"/>
+  <g opacity="0.85">
+    <rect x="200" y="210" width="180" height="250" rx="16" fill="#ffd36a"/>
+    <rect x="410" y="210" width="180" height="250" rx="16" fill="#7bd6a9"/>
+    <rect x="620" y="210" width="180" height="250" rx="16" fill="#9bb7ff"/>
+    <rect x="830" y="210" width="180" height="250" rx="16" fill="#ff7aa2"/>
+    <rect x="1040" y="210" width="180" height="250" rx="16" fill="#ffffff"/>
+  </g>
+  <text x="80" y="110" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800">Library Corner</text>
+  <text x="80" y="180" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="600" opacity="0.9">Placeholder photo " replace in public/photos/</text>
+</svg>
+
