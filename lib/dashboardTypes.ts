@@ -19,10 +19,26 @@ export type DashboardPhoto = {
   alt: string;
 };
 
+export type DashboardAnnouncement = {
+  id: string;
+  title: string;
+  message: string;
+};
+
 export type DashboardToday = {
   meals: MealPlan;
   events: DashboardEvent[];
-  photos: DashboardPhoto[];
+  /**
+   * Family-facing photos for residents (slideshow/grid).
+   * For backwards compatibility, older data may still use `photos`.
+   */
+  familyPhotos?: DashboardPhoto[];
+  /**
+   * Legacy field (kept for existing saved localStorage data).
+   * Prefer `familyPhotos` going forward.
+   */
+  photos?: DashboardPhoto[];
+  announcements?: DashboardAnnouncement[];
 };
 
 export type DashboardData = {
@@ -45,7 +61,9 @@ export function isDashboardData(value: unknown): value is DashboardData {
   const today = v.today as Record<string, unknown>;
   const meals = today.meals as Record<string, unknown> | undefined;
   const events = today.events as unknown;
+  const familyPhotos = today.familyPhotos as unknown;
   const photos = today.photos as unknown;
+  const announcements = today.announcements as unknown;
 
   const hasMeals =
     !!meals &&
@@ -67,20 +85,36 @@ export function isDashboardData(value: unknown): value is DashboardData {
       );
     });
 
-  const hasPhotos =
-    Array.isArray(photos) &&
-    photos.every((p) => {
+  const isPhotoArray = (arr: unknown) =>
+    Array.isArray(arr) &&
+    arr.every((p) => {
       if (!p || typeof p !== "object") return false;
       const ph = p as Record<string, unknown>;
       return typeof ph.src === "string" && typeof ph.alt === "string";
     });
+
+  const hasSomePhotos = isPhotoArray(familyPhotos) || isPhotoArray(photos);
+
+  const hasAnnouncements =
+    announcements === undefined ||
+    (Array.isArray(announcements) &&
+      announcements.every((a) => {
+        if (!a || typeof a !== "object") return false;
+        const an = a as Record<string, unknown>;
+        return (
+          typeof an.id === "string" &&
+          typeof an.title === "string" &&
+          typeof an.message === "string"
+        );
+      }));
 
   return (
     typeof home.name === "string" &&
     typeof home.timezone === "string" &&
     hasMeals &&
     hasEvents &&
-    hasPhotos
+    hasSomePhotos &&
+    hasAnnouncements
   );
 }
 
