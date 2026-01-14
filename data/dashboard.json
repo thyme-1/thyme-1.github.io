@@ -10,6 +10,18 @@
       "lunch": "Chicken noodle soup, turkey sandwich, garden salad",
       "dinner": "Baked salmon, roasted vegetables, mashed potatoes"
     },
+    "announcements": [
+      {
+        "id": "announcement-1",
+        "title": "Quiet Hours",
+        "message": "Quiet hours are 9:00 PM to 7:00 AM. Thank you for helping keep evenings calm."
+      },
+      {
+        "id": "announcement-2",
+        "title": "Maintenance",
+        "message": "Elevator B will be serviced today from 2:00 PM to 3:00 PM."
+      }
+    ],
     "events": [
       {
         "id": "event-1",
@@ -33,7 +45,7 @@
         "description": "Requests welcome."
       }
     ],
-    "photos": [
+    "familyPhotos": [
       { "src": "/photos/01-garden.svg", "alt": "Garden walkway" },
       { "src": "/photos/02-activities.svg", "alt": "Group activity" },
       { "src": "/photos/03-dining.svg", "alt": "Dining room" },

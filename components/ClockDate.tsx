@@ -32,10 +32,10 @@ export function ClockDate(props: { timezone?: string }) {
 
   return (
     <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
-      <div className="text-6xl font-black tracking-tight text-black">
+      <div className="text-6xl font-black tracking-tight">
         {display.time}
       </div>
-      <div className="text-2xl font-bold text-black/80">{display.date}</div>
+      <div className="text-2xl font-bold opacity-80">{display.date}</div>
     </div>
   );
 }

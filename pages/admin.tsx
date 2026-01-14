@@ -1,9 +1,10 @@
 import Head from "next/head";
 import type { GetStaticProps } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import baseDashboard from "@/data/dashboard.json";
 import {
   type DashboardData,
+  type DashboardAnnouncement,
   type DashboardEvent,
   type DashboardPhoto,
   isDashboardData,
@@ -41,6 +42,7 @@ export default function AdminPage(props: Props) {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [statusText, setStatusText] = useState("Using base JSON");
 
   const [draft, setDraft] = useState<DashboardData>(props.initial);
 
@@ -51,12 +53,10 @@ export default function AdminPage(props: Props) {
     const local = loadDashboardOverrides();
     if (local && isDashboardData(local)) setDraft(local);
     else setDraft(props.initial);
-  }, [props.initial]);
 
-  const statusText = useMemo(() => {
-    const usingLocal = !!loadDashboardOverrides();
-    return usingLocal ? "Using local edits (localStorage)" : "Using base JSON";
-  }, []);
+    const usingLocal = !!local;
+    setStatusText(usingLocal ? "Using local edits (localStorage)" : "Using base JSON");
+  }, [props.initial]);
 
   async function onLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -112,37 +112,93 @@ export default function AdminPage(props: Props) {
     }));
   }
 
-  function updatePhoto(idOrSrc: string, patch: Partial<DashboardPhoto>) {
+  function updateAnnouncement(id: string, patch: Partial<DashboardAnnouncement>) {
     setDraft((d) => ({
       ...d,
       today: {
         ...d.today,
-        photos: d.today.photos.map((ph) =>
-          (ph.src === idOrSrc ? { ...ph, ...patch } : ph),
+        announcements: (d.today.announcements ?? []).map((a) =>
+          a.id === id ? { ...a, ...patch } : a,
         ),
       },
     }));
   }
 
-  function addPhoto() {
+  function addAnnouncement() {
     setDraft((d) => ({
       ...d,
       today: {
         ...d.today,
-        photos: [...d.today.photos, { src: "/photos/01-garden.svg", alt: "New photo" }],
+        announcements: [
+          ...(d.today.announcements ?? []),
+          {
+            id: newId("announcement"),
+            title: "New Announcement",
+            message: "Message...",
+          },
+        ],
       },
     }));
   }
 
-  function removePhoto(src: string) {
+  function removeAnnouncement(id: string) {
     setDraft((d) => ({
       ...d,
-      today: { ...d.today, photos: d.today.photos.filter((ph) => ph.src !== src) },
+      today: {
+        ...d.today,
+        announcements: (d.today.announcements ?? []).filter((a) => a.id !== id),
+      },
+    }));
+  }
+
+  function updateFamilyPhoto(idOrSrc: string, patch: Partial<DashboardPhoto>) {
+    setDraft((d) => ({
+      ...d,
+      today: {
+        ...d.today,
+        familyPhotos: (d.today.familyPhotos ?? d.today.photos ?? []).map((ph) =>
+          ph.src === idOrSrc ? { ...ph, ...patch } : ph,
+        ),
+      },
+    }));
+  }
+
+  function addFamilyPhoto() {
+    setDraft((d) => ({
+      ...d,
+      today: {
+        ...d.today,
+        familyPhotos: [
+          ...(d.today.familyPhotos ?? d.today.photos ?? []),
+          { src: "/photos/01-garden.svg", alt: "New photo" },
+        ],
+      },
+    }));
+  }
+
+  function removeFamilyPhoto(src: string) {
+    setDraft((d) => ({
+      ...d,
+      today: {
+        ...d.today,
+        familyPhotos: (d.today.familyPhotos ?? d.today.photos ?? []).filter(
+          (ph) => ph.src !== src,
+        ),
+      },
     }));
   }
 
   function save() {
-    saveDashboardOverrides(draft);
+    // Keep legacy `photos` in sync so older frontends (or existing saved data) still work.
+    const synced: DashboardData = {
+      ...draft,
+      today: {
+        ...draft.today,
+        photos: draft.today.familyPhotos ?? draft.today.photos,
+        announcements: draft.today.announcements ?? [],
+      },
+    };
+    saveDashboardOverrides(synced);
     setError(null);
     alert("Saved! The dashboard will now use your local edits on this device/browser.");
   }
@@ -174,7 +230,7 @@ export default function AdminPage(props: Props) {
                   Admin Editor
                 </h1>
                 <p className="mt-1 text-xl font-semibold text-black/70">
-                  Edit meals, activities, and slideshow photos (saved to localStorage).
+                  Edit meals, activities, announcements, and family photos (saved to localStorage).
                 </p>
               </div>
               <div className="text-lg font-bold text-black/70">{statusText}</div>
@@ -316,9 +372,9 @@ export default function AdminPage(props: Props) {
 
               <section className="rounded-2xl border-2 border-black bg-white p-6 shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                  <h2 className="text-3xl font-black">Slideshow Photos</h2>
+                  <h2 className="text-3xl font-black">Family Photos</h2>
                   <button
-                    onClick={addPhoto}
+                    onClick={addFamilyPhoto}
                     className="rounded-xl border-2 border-black bg-blue-200 px-5 py-3 text-lg font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-blue-100"
                     type="button"
                   >
@@ -332,14 +388,14 @@ export default function AdminPage(props: Props) {
                 </p>
 
                 <div className="mt-5 space-y-4">
-                  {draft.today.photos.map((ph) => (
+                  {(draft.today.familyPhotos ?? draft.today.photos ?? []).map((ph) => (
                     <div key={ph.src} className="rounded-2xl border-2 border-black bg-slate-50 p-4">
                       <div className="grid gap-3 md:grid-cols-3">
                         <label className="flex flex-col gap-2 md:col-span-2">
                           <span className="text-lg font-bold">Image src</span>
                           <input
                             value={ph.src}
-                            onChange={(e) => updatePhoto(ph.src, { src: e.target.value })}
+                            onChange={(e) => updateFamilyPhoto(ph.src, { src: e.target.value })}
                             className="h-12 rounded-xl border-2 border-black px-3 text-lg font-semibold outline-none focus:ring-4 focus:ring-yellow-300"
                           />
                         </label>
@@ -347,7 +403,7 @@ export default function AdminPage(props: Props) {
                           <span className="text-lg font-bold">Alt text</span>
                           <input
                             value={ph.alt}
-                            onChange={(e) => updatePhoto(ph.src, { alt: e.target.value })}
+                            onChange={(e) => updateFamilyPhoto(ph.src, { alt: e.target.value })}
                             className="h-12 rounded-xl border-2 border-black px-3 text-lg font-semibold outline-none focus:ring-4 focus:ring-yellow-300"
                           />
                         </label>
@@ -357,7 +413,65 @@ export default function AdminPage(props: Props) {
                           <img src={ph.src} alt={ph.alt} className="h-full w-full object-cover" />
                         </div>
                         <button
-                          onClick={() => removePhoto(ph.src)}
+                          onClick={() => removeFamilyPhoto(ph.src)}
+                          className="rounded-xl border-2 border-black bg-red-200 px-5 py-3 text-lg font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-red-100"
+                          type="button"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="rounded-2xl border-2 border-black bg-white p-6 shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                  <h2 className="text-3xl font-black">Announcements</h2>
+                  <button
+                    onClick={addAnnouncement}
+                    className="rounded-xl border-2 border-black bg-purple-200 px-5 py-3 text-lg font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-purple-100"
+                    type="button"
+                  >
+                    + Add Announcement
+                  </button>
+                </div>
+
+                <div className="mt-5 space-y-4">
+                  {(draft.today.announcements ?? []).length === 0 ? (
+                    <div className="rounded-xl border-2 border-black bg-slate-50 p-4 text-lg font-bold text-black/70">
+                      No announcements yet.
+                    </div>
+                  ) : null}
+
+                  {(draft.today.announcements ?? []).map((a) => (
+                    <div key={a.id} className="rounded-2xl border-2 border-black bg-slate-50 p-4">
+                      <div className="grid gap-3 md:grid-cols-3">
+                        <label className="flex flex-col gap-2 md:col-span-1">
+                          <span className="text-lg font-bold">Title</span>
+                          <input
+                            value={a.title}
+                            onChange={(e) =>
+                              updateAnnouncement(a.id, { title: e.target.value })
+                            }
+                            className="h-12 rounded-xl border-2 border-black px-3 text-lg font-semibold outline-none focus:ring-4 focus:ring-yellow-300"
+                          />
+                        </label>
+                        <label className="flex flex-col gap-2 md:col-span-2">
+                          <span className="text-lg font-bold">Message</span>
+                          <input
+                            value={a.message}
+                            onChange={(e) =>
+                              updateAnnouncement(a.id, { message: e.target.value })
+                            }
+                            className="h-12 rounded-xl border-2 border-black px-3 text-lg font-semibold outline-none focus:ring-4 focus:ring-yellow-300"
+                          />
+                        </label>
+                      </div>
+
+                      <div className="mt-4 flex justify-end">
+                        <button
+                          onClick={() => removeAnnouncement(a.id)}
                           className="rounded-xl border-2 border-black bg-red-200 px-5 py-3 text-lg font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-red-100"
                           type="button"
                         >
