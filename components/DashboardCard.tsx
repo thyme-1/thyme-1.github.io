@@ -3,65 +3,86 @@ import { type ReactNode } from "react";
 export function DashboardCard(props: {
   title: string;
   subtitle?: string;
-  theme: "light" | "dark";
+  accent?: "amber" | "rose" | "sky" | "emerald" | "violet";
   children: ReactNode;
   onFocus?: () => void;
   focusHint?: string;
 }) {
   const interactive = typeof props.onFocus === "function";
-  const Comp: any = interactive ? "button" : "section";
 
-  const wrapperClasses =
-    props.theme === "dark"
-      ? "border-white/15 bg-slate-950/55 text-slate-50"
-      : "border-white/30 bg-white/80 text-slate-900";
+  const accent = props.accent ?? "amber";
+  const accentRing =
+    accent === "amber"
+      ? "focus-visible:ring-amber-300/70"
+      : accent === "rose"
+        ? "focus-visible:ring-rose-300/70"
+        : accent === "sky"
+          ? "focus-visible:ring-sky-300/70"
+          : accent === "emerald"
+            ? "focus-visible:ring-emerald-300/70"
+            : "focus-visible:ring-violet-300/70";
 
-  const titleClasses = props.theme === "dark" ? "text-slate-50" : "text-slate-900";
-  const subtitleClasses =
-    props.theme === "dark" ? "text-slate-200/80" : "text-slate-600";
+  const accentGlow =
+    accent === "amber"
+      ? "from-amber-200/35 to-amber-50/0"
+      : accent === "rose"
+        ? "from-rose-200/35 to-rose-50/0"
+        : accent === "sky"
+          ? "from-sky-200/35 to-sky-50/0"
+          : accent === "emerald"
+            ? "from-emerald-200/35 to-emerald-50/0"
+            : "from-violet-200/35 to-violet-50/0";
 
-  return (
-    <Comp
-      type={interactive ? "button" : undefined}
-      onClick={props.onFocus}
-      className={[
-        "group relative w-full text-left",
-        "rounded-3xl border p-6",
-        "shadow-[0_10px_30px_rgba(15,23,42,0.10)] backdrop-blur",
-        "transition duration-200 ease-out",
-        interactive
-          ? "active:scale-[0.99] active:shadow-[0_8px_24px_rgba(15,23,42,0.12)]"
-          : "",
-        "focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/70",
-        wrapperClasses,
-      ].join(" ")}
-    >
+  const className = [
+    "group relative w-full text-left",
+    "rounded-[28px] border border-white/20 bg-white/12 p-6 backdrop-blur",
+    "shadow-[0_18px_50px_rgba(0,0,0,0.20)]",
+    "transition duration-300 ease-out",
+    interactive
+      ? "active:scale-[0.99] active:shadow-[0_14px_45px_rgba(0,0,0,0.24)]"
+      : "",
+    "focus:outline-none focus-visible:ring-4",
+    accentRing,
+  ].join(" ");
+
+  const inner = (
+    <>
+      <div
+        className={[
+          "pointer-events-none absolute inset-0 rounded-[28px] opacity-70",
+          "bg-gradient-to-br",
+          accentGlow,
+        ].join(" ")}
+      />
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
-          <h2 className={["text-2xl font-extrabold tracking-tight", titleClasses].join(" ")}>
+          <h2 className="text-2xl font-extrabold tracking-tight text-white">
             {props.title}
           </h2>
           {props.subtitle ? (
-            <p className={["mt-1 text-lg font-semibold", subtitleClasses].join(" ")}>
+            <p className="mt-1 text-lg font-semibold text-white/80">
               {props.subtitle}
             </p>
           ) : null}
         </div>
         {props.focusHint ? (
-          <div
-            className={[
-              "hidden rounded-full px-3 py-1 text-sm font-bold sm:block",
-              props.theme === "dark"
-                ? "bg-white/10 text-slate-200/80"
-                : "bg-slate-900/5 text-slate-700",
-            ].join(" ")}
-          >
+          <div className="hidden rounded-full bg-white/10 px-3 py-1 text-sm font-bold text-white/80 sm:block">
             {props.focusHint}
           </div>
         ) : null}
       </div>
-      <div>{props.children}</div>
-    </Comp>
+      <div className="relative">{props.children}</div>
+    </>
   );
+
+  if (interactive) {
+    return (
+      <button type="button" onClick={props.onFocus} className={className}>
+        {inner}
+      </button>
+    );
+  }
+
+  return <section className={className}>{inner}</section>;
 }
 

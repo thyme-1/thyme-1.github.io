@@ -36,6 +36,9 @@ export function ClockDate(props: { timezone?: string }) {
         {display.time}
       </div>
       <div className="text-2xl font-bold opacity-80">{display.date}</div>
+      {props.timezone ? (
+        <div className="text-lg font-semibold opacity-70">{props.timezone}</div>
+      ) : null}
     </div>
   );
 }
